@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhidalgo < jhidalgo@student.42madrid.fr    +#+  +:+       +#+        */
+/*   By: jhidalgo <jhidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:01:35 by jhidalgo          #+#    #+#             */
-/*   Updated: 2021/04/30 13:26:24 by jhidalgo         ###   ########.fr       */
+/*   Updated: 2021/04/30 17:46:39 by jhidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,14 @@ int	ft_next_line(char **line, char **memory, ssize_t buff)
 	len = (ft_find(*memory, '\n'));
 	if (buff < 0)
 		rtn = -1;
-	if (buff == 0)
+	else if (buff == 0 && ft_find(*memory, '\n') == (int)ft_strlen(*memory))
 		rtn = 0;
-	rtn = 1;
-	*line = ft_substr(*memory, 0, len);
+	else
+		rtn = 1;
+	if (*memory[0] == '\n')
+		*line = ft_substr(*memory, 0, 1);
+	else
+		*line = ft_substr(*memory, 0, len);
 	if (!line)
 		return (-1);
 	*memory = ft_strchr(*memory, '\n');
@@ -48,10 +52,11 @@ int	get_next_line(int fd, char **line)
 {
 	static char *memory[4096];
 	char	tmp[BUFFER_SIZE + 1];
+	char	*aux;
 	ssize_t	buff;
 	
 	buff = 1;
-	if ((fd < 0 || fd > 20) || (!line || BUFFER_SIZE < 1)) //Corregir el límite superior de FD
+	if ((fd < 0 || fd > 4096) || (!line || BUFFER_SIZE < 1))
 		return (-1);
 	if (!memory[fd])
 		memory[fd] = ft_strdup("");
@@ -59,12 +64,13 @@ int	get_next_line(int fd, char **line)
 	{	
 		buff = read(fd, tmp, BUFFER_SIZE);
 		tmp[buff] = '\0';
-		printf("%d\n", (int)buff);
-		printf("%s\n", tmp);
 		if (buff == -1)
+		{
 			return (-1);
-		memory[fd] = ft_strjoin(memory[fd], tmp);
-		printf("%s\n", memory[fd]);
+		}
+		aux = ft_strjoin(memory[fd], tmp);
+		free (memory[fd]);
+		memory[fd] = aux;
 		ft_bzero(tmp, BUFFER_SIZE);
 	}
 	return (ft_next_line (line, &memory[fd], buff));
@@ -75,20 +81,21 @@ int main(void)
 {
     char *line;
     int fd;
-	int	size;
+	int	r;
 
-	size = 1;
+	//r = 1;
 	fd = open("hola.txt", O_RDONLY);
-	size = get_next_line(fd, &line);
-	printf("%s\n", line);
-	if (*line)
-		free(line);
-	// while ((r = get_next_line(fd, &line)) > 0)
-	// {
-	// 	printf("%s\n", line);
+	// size = get_next_line(fd, &line);
+	//printf("%s\n", line);
+	// if (*line)
 	// 	free(line);
-	// 	line = NULL;
-	// }
+	while ((r = get_next_line(fd, &line)) > 0)
+	{
+		//printf("100000%s\n", line);
+		printf("NEXT LINE: %s\n", line);
+		free(line);	
+	}
+
 	// printf("%s\n", line);
 	// free (line);
 	// line = NULL;

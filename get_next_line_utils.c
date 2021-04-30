@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhidalgo < jhidalgo@student.42madrid.fr    +#+  +:+       +#+        */
+/*   By: jhidalgo <jhidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:01:25 by jhidalgo          #+#    #+#             */
-/*   Updated: 2021/04/30 13:43:53 by jhidalgo         ###   ########.fr       */
+/*   Updated: 2021/04/30 17:42:48 by jhidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,8 @@ char	*ft_strdup(char *s) //Crea una cadena de memoria dinámica igual a otra que
 		i++;
 	}
 	str[i] = 0;
-	if (*s)
-	    free(s);
 	return (str);
 }
-
 
 char	*ft_strjoin(char *s1, char *s2) //Une dos cadenas de caracteres.
 {
@@ -69,7 +66,7 @@ char	*ft_strjoin(char *s1, char *s2) //Une dos cadenas de caracteres.
 
 	if (!s1 && !s2)
 		return (NULL);
-	str = malloc((ft_strlen((char *)s1) + ft_strlen((char *)s2 + 1))
+	str = malloc((ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1)
 			* sizeof(char));
 	if (!str)
 		return (NULL);
@@ -83,11 +80,7 @@ char	*ft_strjoin(char *s1, char *s2) //Une dos cadenas de caracteres.
 		*str++ = (char)*s2++;
 	}
 	*str = '\0';
-	if (*s1)
-	{
-		free(s1);
-		s1 = NULL;
-	}
+
 	return (str1);
 }
 
@@ -122,7 +115,7 @@ char	*ft_strchr(char *s, int c)
 {
 	char	*str;
 	char	*str2;
-	
+
 	str = (char *)s;
 	while (*str != c % 256)
 	{
@@ -130,6 +123,8 @@ char	*ft_strchr(char *s, int c)
 			break ;
 		str++;
 	}
+	if(*str == '\n')
+		str++;
 	str2 = ft_strdup(str);
 	if (*s)
 		free (s);
