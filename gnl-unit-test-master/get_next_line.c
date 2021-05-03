@@ -6,13 +6,12 @@
 /*   By: jhidalgo <jhidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:01:35 by jhidalgo          #+#    #+#             */
-/*   Updated: 2021/05/03 21:46:25 by jhidalgo         ###   ########.fr       */
+/*   Updated: 2021/05/03 15:20:40 by jhidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 
-int		ft_find(char *str, char c)
+int		ft_find(char * str, char c)
 {
 	int	i;
 
@@ -30,14 +29,10 @@ int	ft_next_line(char **line, char **memory, ssize_t buff)
 {
 	size_t	len;
 	int		rtn;
-
-	len = ft_find(*memory, '\n');
+	
+	len = (ft_find(*memory, '\n'));
 	if (buff < 0)
-	{
-		if (*memory)
-			free (*memory);
 		rtn = -1;
-	}
 	else if (buff == 0 && ft_find(*memory, '\n') == (int)ft_strlen(*memory))
 		rtn = 0;
 	else
@@ -47,11 +42,7 @@ int	ft_next_line(char **line, char **memory, ssize_t buff)
 	else
 		*line = ft_substr(*memory, 0, len);
 	if (!line)
-	{
-		if (*memory)
-			free (*memory);
 		return (-1);
-	}
 	*memory = ft_strchr(*memory, '\n');
 	return (rtn);
 }
@@ -59,18 +50,16 @@ int	ft_next_line(char **line, char **memory, ssize_t buff)
 int	get_next_line(int fd, char **line)
 {
 	static char *memory[4096];
-	char		tmp[BUFFER_SIZE + 1];
-	char		*aux;
-	ssize_t		buff;
-
+	char	tmp[BUFFER_SIZE + 1];
+	char	*aux;
+	ssize_t	buff;
+	
 	buff = 1;
 	if ((fd < 0 || fd > 4096) || (!line || BUFFER_SIZE < 1))
-	{
 		return (-1);
-	}
 	if (!memory[fd])
 		memory[fd] = ft_strdup("");
-	while ((ft_find(memory[fd], '\n') == (int)ft_strlen(memory[fd])) && buff > 0)
+	while((ft_find(memory[fd], '\n') == (int)ft_strlen(memory[fd])) && buff > 0)
 	{	
 		buff = read(fd, tmp, BUFFER_SIZE);
 		tmp[buff] = '\0';
@@ -97,7 +86,7 @@ int	get_next_line(int fd, char **line)
 // 	int	r;
 
 // 	//r = 1;
-// 	fd = open("hola.txt", O_RDONLY);
+// 	fd = open("lotr.txt", O_RDONLY);
 // 	// size = get_next_line(fd, &line);
 // 	//printf("%s\n", line);
 // 	// if (*line)
@@ -114,7 +103,7 @@ int	get_next_line(int fd, char **line)
 // 	// free (line);
 // 	// line = NULL;
 // 	close(fd);
-// //	system("leaks a.out");
+// 	system("leaks a.out");
 //     //while(1);
 // 	return (0);
 // }

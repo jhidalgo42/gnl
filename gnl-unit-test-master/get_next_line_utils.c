@@ -6,11 +6,9 @@
 /*   By: jhidalgo <jhidalgo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:01:25 by jhidalgo          #+#    #+#             */
-/*   Updated: 2021/05/03 21:43:07 by jhidalgo         ###   ########.fr       */
+/*   Updated: 2021/05/03 15:20:41 by jhidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)  //longitud de cadena de caracteres
 {
@@ -80,6 +78,7 @@ char	*ft_strjoin(char *s1, char *s2) //Une dos cadenas de caracteres.
 		*str++ = (char)*s2++;
 	}
 	*str = '\0';
+
 	return (str1);
 }
 
